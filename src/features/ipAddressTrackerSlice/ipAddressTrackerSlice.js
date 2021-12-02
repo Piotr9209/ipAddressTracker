@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { BASE_URL } from "../BASE_URL_FETCH_IP_ADDRESS/BASE_URL";
+import { BASE_URL_IP_ADDRESS } from "../BASE_URL/BASE_URL_IP_ADDRESS";
 
 const initialState = {
   addressTracker: null,
@@ -9,7 +9,7 @@ const initialState = {
 export const getAddressTracker = createAsyncThunk(
   "address/getIpAddress",
   async (url = "") => {
-    return await fetch(`${BASE_URL}${url}`).then((r) => r.json());
+    return await fetch(`${BASE_URL_IP_ADDRESS}${url}`).then((r) => r.json());
   }
 );
 

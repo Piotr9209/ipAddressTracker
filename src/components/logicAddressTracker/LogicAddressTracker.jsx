@@ -66,6 +66,7 @@ export const LogicAddressTracker = () => {
         valueInputAddressTracker={addressIpToValidation}
         arrayAddressTracker={addressTracker}
         ipStatusFetch={ipStatusFetch}
+        wrongDataInput={wrongAddressTracker}
       />
     </main>
   );
