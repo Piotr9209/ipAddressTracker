@@ -2,7 +2,9 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { SearchAddressTracker } from "../searchAddressTracker/SearchAddressTracker";
 import { getAddressTracker } from "../../features/ipAddressTrackerSlice/ipAddressTrackerSlice";
+import { getWeather } from "../../features/weatherSlice/weatherSlice";
 import "./addressTrackerComponent.scss";
+import { toggleShowWeather } from "../../features/weatherSlice/weatherSlice";
 
 export const LogicAddressTracker = () => {
   const [addressIpToValidation, setAddressIpToValidation] = useState("");
@@ -17,6 +19,9 @@ export const LogicAddressTracker = () => {
   const { addressTracker, ipStatusFetch } = useSelector(
     (state) => state.addressTracker
   );
+  const { weather, weatherStatusFetch, isShowWeather } = useSelector(
+    (state) => state.weather
+  );
 
   const handleSubmitSearchAddress = useCallback(
     (e) => {
@@ -25,11 +30,13 @@ export const LogicAddressTracker = () => {
         dispatch(getAddressTracker(addressTrackerToSendApi));
       setAddressIpToValidation("");
       setAddressTrackerToSendApi("");
+      dispatch(toggleShowWeather(false));
     },
     [addressTrackerToSendApi, dispatch, toggleSendApi.addressTracker]
   );
 
   const handleChangeSearchAddress = useCallback((e) => {
+    e.preventDefault();
     setAddressIpToValidation(e.target.value);
     const regExpIpAddress =
       /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -56,7 +63,17 @@ export const LogicAddressTracker = () => {
 
   useEffect(() => {
     dispatch(getAddressTracker());
-  }, []);
+  }, [dispatch]);
+
+  const handleClickGetWeather = (e) => {
+    e.preventDefault();
+    const city = ipStatusFetch === "success" && addressTracker.city;
+    dispatch(getWeather(city));
+
+    isShowWeather === false
+      ? dispatch(toggleShowWeather(true))
+      : dispatch(toggleShowWeather(false));
+  };
 
   return (
     <main>
@@ -67,6 +84,10 @@ export const LogicAddressTracker = () => {
         arrayAddressTracker={addressTracker}
         ipStatusFetch={ipStatusFetch}
         wrongDataInput={wrongAddressTracker}
+        onClickGetWeather={handleClickGetWeather}
+        arrayActuallyWeather={weather}
+        weatherStatusFetch={weatherStatusFetch}
+        isShowWeather={isShowWeather}
       />
     </main>
   );

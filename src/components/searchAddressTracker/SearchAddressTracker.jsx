@@ -10,20 +10,13 @@ export const SearchAddressTracker = ({
   arrayAddressTracker,
   ipStatusFetch,
   wrongDataInput,
+  onClickGetWeather,
+  arrayActuallyWeather,
+  weatherStatusFetch,
+  isShowWeather,
 }) => {
-  const dispatch = useDispatch();
-  const { weather, weatherStatusFetch } = useSelector((state) => state.weather);
+  console.log(arrayActuallyWeather, "<weather");
 
-  const showWeather = () => {
-    dispatch(getWeather("London"));
-  };
-
-  useEffect(() => {
-    dispatch(getWeather("London"));
-  }, [dispatch]);
-
-  console.log(weather, "<weather");
-  console.log(weatherStatusFetch, "<----status fetch");
   return (
     <div>
       <form>
@@ -72,9 +65,45 @@ export const SearchAddressTracker = ({
             </p>
           </div>
           <div>
-            <p>
-              <button onClick={showWeather}>SHOW WEATHER</button>
-            </p>
+            <button onClick={onClickGetWeather}>
+              {isShowWeather ? "Hide weather" : "Show weather"}
+            </button>
+            {isShowWeather && weatherStatusFetch === "done" && (
+              <div>
+                <p>
+                  Weather parameters:{" "}
+                  <span>
+                    <img
+                      src={`http://openweathermap.org/img/wn/${arrayActuallyWeather.weather[0].icon}@2x.png`}
+                      alt="iconWeather"
+                    />
+                  </span>
+                  <span>{arrayActuallyWeather.weather[0].main}</span>
+                </p>
+                <p>
+                  Sky:{" "}
+                  <span>{arrayActuallyWeather.weather[0].description}</span>
+                </p>
+                <p>
+                  Temperature:{" "}
+                  <span>{arrayActuallyWeather.main.temp.toFixed(1)}</span>
+                </p>
+                <p>
+                  Clouds: <span>{arrayActuallyWeather.clouds.all}</span>
+                </p>
+                <p>
+                  Pressure:{" "}
+                  <span>{arrayActuallyWeather.main.pressure.toFixed()}</span>
+                </p>
+                <p>
+                  Humidity:{" "}
+                  <span>{arrayActuallyWeather.main.humidity.toFixed()}</span>
+                </p>
+                <p>
+                  Wind speed: <span>{arrayActuallyWeather.wind.speed}</span>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </aside>

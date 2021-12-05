@@ -5,13 +5,14 @@ import { API_KEY } from "../BASE_URL/BASE_URL_OPENWEATHER";
 const initialState = {
   weather: null,
   weatherStatusFetch: null,
+  isShowWeather: false,
 };
 
 export const getWeather = createAsyncThunk(
   "weather/getWeather",
   async (city) => {
     return await fetch(
-      `api.openweathermap.org/data/2.5/weather?q=${city}&appid=e1c406926e799e9713f8363bd30b5a8c`
+      `${BASE_URL_WEATHER}q=${city}&units=metric${API_KEY}`
     ).then((r) => r.json());
   }
 );
@@ -19,11 +20,13 @@ export const getWeather = createAsyncThunk(
 export const weatherSlice = createSlice({
   name: "weather",
   initialState,
-  reducers: {},
+  reducers: {
+    toggleShowWeather: (state, action) => {
+      state.isShowWeather = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getWeather.fulfilled, (state, action) => {
-      console.log(action, "<-action paylod");
-      console.log(state);
       state.weatherStatusFetch = "done";
       state.weather = action.payload;
     });
@@ -35,3 +38,5 @@ export const weatherSlice = createSlice({
     });
   },
 });
+
+export const { toggleShowWeather } = weatherSlice.actions;
