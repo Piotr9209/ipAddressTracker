@@ -37,11 +37,11 @@ export const LogicAddressTracker = () => {
 
   const handleChangeSearchAddress = useCallback((e) => {
     e.preventDefault();
-    setAddressIpToValidation(e.target.value);
+    setAddressIpToValidation(e.target.value.trim());
     const regExpIpAddress =
       /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     const regExpDomainAddress =
-      /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+      /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
 
     if (
       regExpIpAddress.test(e.target.value) ||
@@ -51,7 +51,7 @@ export const LogicAddressTracker = () => {
         addressTracker: true,
         wrongAddressTracker: false,
       }));
-      setAddressTrackerToSendApi(e.target.value);
+      setAddressTrackerToSendApi(e.target.value.trim());
     } else {
       setToggleSendApi((prevState) => ({
         addressTracker: false,
@@ -84,6 +84,7 @@ export const LogicAddressTracker = () => {
         arrayAddressTracker={addressTracker}
         ipStatusFetch={ipStatusFetch}
         wrongDataInput={wrongAddressTracker}
+        toggleMessageWrongApi={toggleSendApi.wrongAddressTracker}
         onClickGetWeather={handleClickGetWeather}
         arrayActuallyWeather={weather}
         weatherStatusFetch={weatherStatusFetch}
