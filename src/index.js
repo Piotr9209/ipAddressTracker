@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { LogicAddressTracker } from "./components/logicAddressTracker/LogicAddressTracker";
 import { Provider } from "react-redux";
 import store from "./features/store/store";
+import "./reset/_reset.scss";
 
 ReactDOM.render(
   <React.StrictMode>

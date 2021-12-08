@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { SearchAddressTracker } from "../searchAddressTracker/SearchAddressTracker";
 import { getAddressTracker } from "../../features/ipAddressTrackerSlice/ipAddressTrackerSlice";
 import { getWeather } from "../../features/weatherSlice/weatherSlice";
-import "./addressTrackerComponent.scss";
 import { toggleShowWeather } from "../../features/weatherSlice/weatherSlice";
 
 export const LogicAddressTracker = () => {

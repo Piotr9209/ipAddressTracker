@@ -1,5 +1,8 @@
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import patternBg from "../../images/pattern-bg.png";
+import iconArrow from "../../images/icon-arrow.svg";
+import "./searchAddressTracker.scss";
 
 export const SearchAddressTracker = ({
   onSubmitAddress,
@@ -15,88 +18,121 @@ export const SearchAddressTracker = ({
   isShowWeather,
 }) => {
   return (
-    <div>
-      <form>
-        <input
-          type="text"
-          value={valueInputAddressTracker}
-          onChange={onChangeAddress}
-          placeholder="Search for any IP address or domain"
+    <main className="main">
+      <div className="main-container">
+        <img
+          className="pattern-background"
+          src={patternBg}
+          alt="pattern background"
         />
-        <button onClick={onSubmitAddress} type="submit">
-          Send
-        </button>
-      </form>
-      <aside>
-        {toggleMessageWrongApi && <p> {wrongDataInput}</p>}
-        <div>
+        <div className="header-container">
+          <p>IP Address Tracker</p>
+        </div>
+        <div className="form-container">
+          <form className="form">
+            <input
+              className="input"
+              type="text"
+              value={valueInputAddressTracker}
+              onChange={onChangeAddress}
+              placeholder="Search for any IP address or domain"
+            />
+            <button onClick={onSubmitAddress} type="submit">
+              <img src={iconArrow} alt="icon arrow " />
+            </button>
+          </form>
+        </div>
+      </div>
+      {toggleMessageWrongApi && (
+        <div className="wrong-data-input">
+          <p> {wrongDataInput}</p>
+        </div>
+      )}
+      <aside className="aside-container">
+        <div className="trackerAndWeather-container">
           {ipStatusFetch === "success" ? (
-            <div>
+            <div className="info-tracker-container">
               <div>
                 <p>ip address: </p>
-                <p>{arrayAddressTracker.query}</p>
+                <br />
+                <span>{arrayAddressTracker.query}</span>
               </div>
               <div>
                 <p>location: </p>
-                <p>{arrayAddressTracker.city}</p>
+                <br />
+                <span>{arrayAddressTracker.city}</span>
               </div>
               <div>
                 <p>timezone:</p>
-                <p>{arrayAddressTracker.timezone}</p>
+                <br />
+                <span>{arrayAddressTracker.timezone}</span>
               </div>
               <div>
                 <p>isp: </p>
-                <p>{arrayAddressTracker.isp}</p>
+                <br />
+                <span>{arrayAddressTracker.isp}</span>
               </div>
             </div>
           ) : (
-            <p>loadding</p>
+            <p>loading</p>
           )}
-          <div>
+          <div className="weather-container">
             <button onClick={onClickGetWeather}>
               {isShowWeather ? "Hide weather" : "Show weather"}
             </button>
             {isShowWeather &&
               weatherStatusFetch === "done" &&
               (Object.keys(arrayActuallyWeather).length === 2 ? (
-                <div>
+                <div className="errorInfoFromFetch">
                   <p>{arrayActuallyWeather.cod}</p>
                   <p>{arrayActuallyWeather.message}</p>
                 </div>
               ) : (
-                <div>
-                  <p>
-                    Weather parameters:{" "}
-                    <span>
-                      <img
-                        src={`http://openweathermap.org/img/wn/${arrayActuallyWeather.weather[0].icon}@2x.png`}
-                        alt="iconWeather"
-                      />
-                    </span>
-                    <span>{arrayActuallyWeather.weather[0].main}</span>
-                  </p>
-                  <p>
-                    Sky:{" "}
-                    <span>{arrayActuallyWeather.weather[0].description}</span>
-                  </p>
-                  <p>
-                    Temperature:{" "}
-                    <span>{arrayActuallyWeather.main.temp.toFixed(1)}</span>
-                  </p>
-                  <p>
-                    Clouds: <span>{arrayActuallyWeather.clouds.all}</span>
-                  </p>
-                  <p>
-                    Pressure:{" "}
-                    <span>{arrayActuallyWeather.main.pressure.toFixed()}</span>
-                  </p>
-                  <p>
-                    Humidity:{" "}
-                    <span>{arrayActuallyWeather.main.humidity.toFixed()}</span>
-                  </p>
-                  <p>
-                    Wind speed: <span>{arrayActuallyWeather.wind.speed}</span>
-                  </p>
+                <div className="weather-info-container">
+                  <div>
+                    <p>
+                      Weather parameters:{" "}
+                      <span>{arrayActuallyWeather.weather[0].main}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      Sky:{" "}
+                      <span>{arrayActuallyWeather.weather[0].description}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      Temperature:{" "}
+                      <span>{arrayActuallyWeather.main.temp.toFixed(1)}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      Clouds: <span>{arrayActuallyWeather.clouds.all}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      Pressure:{" "}
+                      <span>
+                        {arrayActuallyWeather.main.pressure.toFixed()}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      Humidity:{" "}
+                      <span>
+                        {arrayActuallyWeather.main.humidity.toFixed()}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      Wind speed: <span>{arrayActuallyWeather.wind.speed}</span>
+                    </p>
+                  </div>
                 </div>
               ))}
           </div>
@@ -117,6 +153,6 @@ export const SearchAddressTracker = ({
           </Marker>
         </MapContainer>
       ) : null}
-    </div>
+    </main>
   );
 };
